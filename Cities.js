@@ -201,3 +201,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 });
+// this will toggle nav menu in mobile mode
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('nav-toggle').addEventListener('click', function () {
+      var menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+      
+    });
+  });
