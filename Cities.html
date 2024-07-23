@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    </style>
+</head>
+
+<body class="bg-slate-800 m-0 p-2 font-poppins text-white">
+    <div class="md:flex flex-row w-full md:p-4">
+        <!-- nav bar for desktop and mobile -->
+        <nav class="bg-white/20 backdrop-blur-sm rounded-2xl md:w-[6%]">
+            <div class="max-w-7xl mx-auto px-2 md:px-0">
+                <div class="flex justify-between h-16">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img src="Sample Pictures/house.svg" class="h-6 w-6 sm:hidden" alt="Logo" />
+                    </div>
+                    <div class="text-center font-bold my-5 ml-[18%] md:hidden">Weather App</div>
+                    <div class="md:realative">
+                        <div class="hidden md:flex flex-col w-20 bottom-0 justify-center items-center mt-6">
+                            <img src="Sample Pictures/house.svg" class="h-6 w-6" /><a href="index.html"
+                                class=" p-2">Home</a>
+                            <img src="Sample Pictures/building-2.svg" class="h-6 w-6" /><a href="#"
+                                class=" p-2">Cities</a>
+                            <img src="Sample Pictures/contact.svg" class="h-6 w-6 hidden" /> <a href="#"
+                                class=" p-2 hidden">Contact</a>
+                            <img src="Sample Pictures/settings.svg" class="h-6 w-6 absolute bottom-12" /> <a href="#"
+                                class="p-2 absolute bottom-2">Setting</a>
+                        </div>
+                    </div>
+                    <div class="-mr-2 flex p-2 md:hidden">
+                        <button id="nav-toggle" class="bg-gray-700 text-white p-2 rounded-md focus:outline-none">
+                            <svg class="h-6 w-6" stroke="powderblue" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16m-7 6h7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden">
+                <a href="#" class="block text-white hover:bg-gray-200 p-2 rounded">Home</a>
+                <a href="#" class="block text-white hover:bg-gray-200 p-2 rounded">Cities</a>
+                <a href="#" class="block text-white hover:bg-gray-200 p-2 rounded">Contact</a>
+                <a href="#" class="block text-white hover:bg-gray-200 p-2 rounded">Setting</a>
+            </div>
+        </nav>
+
+        <!-- search bar -->
+        <div class="md:ml-10 md:w-[56%]">
+            <div class="relative pt-2">
+                <input type="text" name="location" id="location" placeholder="Enter City Name"
+                    class="bg-white/20 backdrop-blur-sm w-full rounded-lg h-10 pl-3 outline-none" />
+                <ul id="suggestions"
+                    class="absolute bg-slate-800 w-full rounded-lg shadow-lg mt-1 max-h-40 overflow-y-auto z-10 hidden">
+                </ul>
+
+                <button id="search"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg absolute right-0">Search
+                </button>
+            </div>
+
+
+            <!-- City cards -->
+            <div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-2 mt-4 md:mt-5 md:p-5 md:w-full" id="weather-card-1">
+                    <div class="flex flex-row justify-between items-center mx-1 md:mx-3">
+                      <div><img src="Sample Pictures/weather icn.svg" class="h-16 w-16 md:h-20 md:w-20" id="icon-1"/></div>
+                      <div class="flex flex-col justify-center items-start md:mr-[60%]">
+                        <div class="text-xl font-bold text-gray-200" id="city-name-1">City</div>
+                        <div class="text-base font-base text-gray-100 mt-1" id="time-1">Time</div>
+                      </div>
+                      <div class="text-2xl font-base" id="temp-1">Temp</div>
+                    </div>
+                  </div>
+
+                  <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-2 mt-4 md:mt-5 md:p-5 md:w-full" id="weather-card-2">
+                    <div class="flex flex-row justify-between items-center mx-1 md:mx-3">
+                      <div><img src="Sample Pictures/weather icn.svg" class="h-16 w-16 md:h-20 md:w-20" id="icon-2"/></div>
+                      <div class="flex flex-col justify-center items-start md:mr-[60%]">
+                        <div class="text-xl font-bold text-gray-200" id="city-name-2">City</div>
+                        <div class="text-base font-base text-gray-100 mt-1" id="time-2">Time</div>
+                      </div>
+                      <div class="text-2xl font-base" id="temp-2">Temp</div>
+                    </div>
+                  </div>
+
+                  <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-2 mt-4 md:mt-5 md:p-5 md:w-full" id="weather-card-3">
+                    <div class="flex flex-row justify-between items-center mx-1 md:mx-3">
+                      <div><img src="Sample Pictures/weather icn.svg" class="h-16 w-16 md:h-20 md:w-20" id="icon-3"/></div>
+                      <div class="flex flex-col justify-center items-start md:mr-[60%]">
+                        <div class="text-xl font-bold text-gray-200" id="city-name-3">City</div>
+                        <div class="text-base font-base text-gray-100 mt-1" id="time-3">Time</div>
+                      </div>
+                      <div class="text-2xl font-base" id="temp-3">Temp</div>
+                    </div>
+                  </div>
+
+                  <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-2 mt-4 md:mt-5 md:p-5 md:w-full" id="weather-card-4">
+                    <div class="flex flex-row justify-between items-center mx-1 md:mx-3">
+                      <div><img src="Sample Pictures/weather icn.svg" class="h-16 w-16 md:h-20 md:w-20" id="icon-4"/></div>
+                      <div class="flex flex-col justify-center items-start md:mr-[60%]">
+                        <div class="text-xl font-bold text-gray-200" id="city-name-4">City</div>
+                        <div class="text-base font-base text-gray-100 mt-1" id="time-4">Time</div>
+                      </div>
+                      <div class="text-2xl font-base" id="temp-4">Temp</div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <!-- current city's detailed weather  -->
+        <div class="md:w-[36%] mt-[1%] md:ml-7">
+            <div class="flex justify-between p-2 mt-2">
+                <div class="flex flex-col ml-3">
+                    <div class="city-name mb-3 font-semibold text-2xl" id="city_name">
+                        Ahmedabad
+                    </div>
+                    <div class="weather-description mb-2 font-light" id="description">
+                        Clear Sky
+                    </div>
+                    <div class="temperature mt-8 font-bold text-3xl" id="main-temp">
+                        29°C
+                    </div>
+                </div>
+                <div class="weather-img">
+                    <img src="Sample Pictures/sun-medium.svg" class="h-28 w-28 mt-5" alt="weather-img"
+                        id="weather_pic" />
+                </div>
+            </div>
+
+            <!-- Today's weather  -->
+            <div class="flex flex-col mt-5 bg-white/20 backdrop-blur-sm rounded-2xl p-3 md:w-[96%]">
+                <div class="hourly-forecast-title text-left ml-3 mt-4 font-semibold text-xl ">
+                    Today's Forecast
+                </div>
+                <div class="grid grid-cols-3 gap-5 ml-10 mt-4 md:grid-cols-3 md:12">
+                    <div class="hourly-forecast-item ">
+                        <div class="hourly-forecast-time" id="hour1">10 AM</div>
+                        <img src="Sample Pictures/weather icn.svg" id="hour-img-1"
+                            class="hourly-forecast-img h-10 w-10 mt-4 mb-4" alt="weather-img" />
+                        <div class="hourly-forecast-temperature" id="hourly-temp-1">26°C</div>
+                    </div>
+
+                    <div class="hourly-forecast-item ">
+                        <div class="hourly-forecast-time" id="hour2">11 AM</div>
+                        <img src="Sample Pictures/weather icn.svg" id="hour-img-2"
+                            class="hourly-forecast-img h-10 w-10 mt-4 mb-4" alt="weather-img" />
+                        <div class="hourly-forecast-temperature" id="hourly-temp-2">27°C</div>
+                    </div>
+
+                    <div class="hourly-forecast-item ">
+                        <div class="hourly-forecast-time" id="hour3">10 AM</div>
+                        <img src="Sample Pictures/weather icn.svg" id="hour-img-3"
+                            class="hourly-forecast-img h-10 w-10 mt-4 mb-4" alt="weather-img" />
+                        <div class="hourly-forecast-temperature" id="hourly-temp-3">26°C</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Side box for 7-day forecast -->
+            <div class="md:mt-3 md:w-[96%]">
+                <div class="flex flex-col mt-2 bg-white/20 backdrop-blur-sm  rounded-2xl p-4 overflow-auto">
+                    <div class="ml-4 mt-2 font-semibold text-xl">3-Day Forecast</div>
+                    <div class="grid grid-cols-1 justify-between mt-2">
+                        <div class="daily-forecast-item flex flex-row p-4 ml-2 mr-2 justify-center items-center">
+                            <div class="daily-forecast-date">Today</div>
+                            <img src="Sample Pictures/weather icn.svg" class="daily-forecast-img h-10 w-10 mr-10 ml-10"
+                                alt="weather-img" id="daily-img-0" />
+                            <div class="daily-forecast-description" id="desc-0">Clear</div>
+                            <div class="daily-forecast-max-temp ml-5 whitespace-nowrap" id="daily-temp-0">28/34°C</div>
+                        </div>
+
+                        <div class="daily-forecast-item flex flex-row p-4 ml-2 mr-2 justify-center items-center">
+                            <div class="daily-forecast-date">Tomorrow</div>
+                            <img src="Sample Pictures/weather icn.svg" class="daily-forecast-img h-10 w-10 mr-10 ml-10"
+                                alt="weather-img" id="daily-img-1" />
+                            <div class="daily-forecast-description" id="desc-1">Clear</div>
+                            <div class="daily-forecast-max-temp ml-5 whitespace-nowrap	" id="daily-temp-1">28/34°C</div>
+                        </div>
+
+                        <div class="daily-forecast-item flex flex-row p-4 ml-2 mr-2 justify-center items-center">
+                            <div class="daily-forecast-date whitespace-nowrap	" id="date-next">--</div>
+                            <img src="Sample Pictures/weather icn.svg" class="daily-forecast-img h-10 w-10 mr-10 ml-10"
+                                alt="weather-img" id="daily-img-2" />
+                            <div class="daily-forecast-description" id="desc-2">Clear</div>
+                            <div class="daily-forecast-max-temp ml-5 whitespace-nowrap	" id="daily-temp-2">28/34°C</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <script src="Cities.js"></script>
+</body>
+
+</html>
