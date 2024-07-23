@@ -1,56 +1,188 @@
-const city1 = "Ahmedabad";
-const city2 = "bangalore";
+const apiKey = '31a2270b229745a9b4d164415232710';
+const locationInput = document.getElementById('location');
+const suggestionsContainer = document.getElementById('suggestions');
+const searchButton = document.getElementById('search');
 
-async function fetchWeatherData(location, cardId) {
-  const url = `https://api.weatherapi.com/v1/current.json?key=31a2270b229745a9b4d164415232710&q=${location}`;
+locationInput.addEventListener('input', async () => {
+    const query = locationInput.value;
 
-  const response = await fetch(url);
-  const data = await response.json();
+    if (query.length < 3) {
+        suggestionsContainer.classList.add('hidden');
+        return;
+    }
 
-  const temperature = data.current.temp_c;
-  const humidity = data.current.humidity;
+    const response = await fetch(`https://api.weatherapi.com/v1/search.json?key=${apiKey}&q=${query}`);
+    const suggestions = await response.json();
 
-  document.getElementById(`city${cardId}`).textContent = data.location.name;
-  document.getElementById(`country${cardId}`).textContent = data.location.country;
+    displaySuggestions(suggestions);
+});
 
-  const weatherIcon = document.getElementById(`weather-icon${cardId}`);
-  weatherIcon.src = `https:${data.current.condition.icon}`;
-  weatherIcon.alt = `Weather Icon: ${data.current.condition.text}`;
+function displaySuggestions(suggestions) {
+    suggestionsContainer.innerHTML = '';
 
-  document.getElementById(`temperature${cardId}`).textContent = `${temperature}°C`;
-  document.getElementById(`description${cardId}`).textContent = `${data.current.condition.text}`;
+    if (suggestions.length === 0) {
+        suggestionsContainer.classList.add('hidden');
+        return;
+    }
 
-  console.log(`The current temperature in ${data.location.name} is ${temperature} degrees Celsius.`);
-  document.getElementById(`humidity${cardId}`).textContent = `${humidity}%`;
+    suggestions.forEach(suggestion => {
+        const item = document.createElement('li');
+        item.className = 'suggestion-item';
+        item.textContent = `${suggestion.name}, ${suggestion.country}`;
+        item.addEventListener('click', () => {
+            locationInput.value = suggestion.name;
+            suggestionsContainer.classList.add('hidden');
+        });
+
+        suggestionsContainer.appendChild(item);
+    });
+
+    suggestionsContainer.classList.remove('hidden');
 }
 
-function searchWeather() {
-  const city = document.querySelector('input[name="city"]').value;
-  fetchWeatherData(city, "1");
+// Hide suggestions when clicking outside
+document.addEventListener('click', (e) => {
+    if (!locationInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+        suggestionsContainer.classList.add('hidden');
+    }
+});
+
+
+// const cityName = 'surat'
+// Fetch weather data from API
+window.addEventListener('DOMContentLoaded', () => {
+    async function getWeatherData(cityName, apiKey) {
+        console.log(cityName);
+        const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityName}&days=2`);
+        const data = await response.json();
+        console.log(data);
+
+        //Display weather data
+        const location = document.getElementById('city_name');
+        location.innerText = `${data.location.name}, ${data.location.country}`;
+
+        const description = document.getElementById('description');
+        description.innerText = data.current.condition.text;
+
+        const temperature = document.getElementById('main-temp');
+        temperature.innerText = `${Math.round(data.current.temp_c)}°C`;
+
+        const weather_pic = document.getElementById('weather_pic');
+        weather_pic.src = `https:${data.current.condition.icon}`;
+        weather_pic.alt = `Weather Icon: ${data.current.condition.text}`;
+
+        //showing real-feel, wind, chance of rain and uv index
+        const realFeel = document.getElementById('real-feel');
+        realFeel.innerText = `${Math.round(data.current.feelslike_c)}°C`;
+        const wind = document.getElementById('wind');
+        wind.innerText = `${Math.round(data.current.wind_kph)} Km/h`;
+        const humidity = document.getElementById('humidity');
+        humidity.innerText = `${data.current.humidity}%`;
+        const pressure = document.getElementById('pressure');
+        pressure.innerText = `${data.current.pressure_mb} mb`;
+
+
+
+
+
+    }
+
+    async function getForecastData(cityName, apiKey) {
+        const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${cityName}&days=7`);
+        const data = await response.json();
+        console.log(data);
+
+        // getting current time 
+        const currentHour = new Date().getHours();
+        console.log(currentHour);
+
+        //Display forecast hours
+        for (let i = 1; i <= 6; i++) {
+            const hourlyElement = document.getElementById(`hour${i}`);
+            let forecastData;
+
+            if (currentHour + i < 24) {
+                // Data is still within today's forecast
+                forecastData = data.forecast.forecastday[0].hour[currentHour + i];
+            } else {
+                // Data is in tomorrow's forecast
+                forecastData = data.forecast.forecastday[1].hour[(currentHour + i) - 24];
+            }
+
+            hourlyElement.innerText = forecastData ? forecastData.time.slice(11, 16) : 'N/A';
+        }
+
+        // Displaying forecast images and temprature 
+        for (let i = 1; i <= 6; i++) {
+            const hourlyElement = document.getElementById(`hour${i}`);
+            const hourlyImgElement = document.getElementById(`hour-img-${i}`);
+            const hourlyTempElement = document.getElementById(`hourly-temp-${i}`);
+            let forecastData;
+
+            if (currentHour + i < 24) {
+                // Data is still within today's forecast
+                forecastData = data.forecast.forecastday[0].hour[currentHour + i];
+            } else {
+                // Data is in tomorrow's forecast
+                forecastData = data.forecast.forecastday[1].hour[(currentHour + i) - 24];
+            }
+
+            if (forecastData) {
+                hourlyElement.innerText = forecastData.time.slice(11, 16);
+                hourlyImgElement.src = `https:${forecastData.condition.icon}`;
+                hourlyImgElement.alt = `Weather Icon: ${forecastData.condition.text}`;
+                hourlyTempElement.innerText = `${Math.round(forecastData.temp_c)}°C`;
+            } else {
+                hourlyElement.innerText = 'N/A';
+                hourlyImgElement.src = '';
+                hourlyImgElement.alt = '';
+                hourlyTempElement.innerText = '';
+            }
+        }
+
+        // Writing for loop to show next 3 days avg forecast
+        for (let i = 0; i <= 2; i++) {
+
+            const dailyImgElement = document.getElementById(`daily-img-${i}`);
+            const dailyDescElement = document.getElementById(`desc-${i}`);
+            const dailyTempElement = document.getElementById(`daily-temp-${i}`);
+
+            dailyImgElement.src = `https:${data.forecast.forecastday[i].day.condition.icon}`;
+            dailyImgElement.alt = `Weather Icon: ${data.forecast.forecastday[i].day.condition.icon}`;
+            dailyDescElement.innerText = data.forecast.forecastday[i].day.condition.text;
+            dailyTempElement.innerText = `${Math.round(data.forecast.forecastday[i].day.avgtemp_c)}/             
+            ${Math.round(data.forecast.forecastday[i].day.mintemp_c)}°C`;
+
+        }
+        const dailyDateElement = document.getElementById(`date-next`);
+        dailyDateElement.innerText = data.forecast.forecastday[2].date.slice(5, 10);
+
+        // Displaing sun and moon data
+        const sunriseElement = document.getElementById('rise-1');
+        const sunsetElement = document.getElementById('set-1');
+        const moonriseElement = document.getElementById('rise-2');
+        const moonsetElement = document.getElementById('set-2');
+        sunriseElement.innerText = data.forecast.forecastday[0].astro.sunrise;
+        sunsetElement.innerText = data.forecast.forecastday[0].astro.sunset;
+        moonriseElement.innerText = data.forecast.forecastday[0].astro.moonrise;
+        moonsetElement.innerText = data.forecast.forecastday[0].astro.moonset;
+    }
+
+    // Showing weather
+    const search = document.getElementById('search');
+    search.addEventListener("click", function() {
+        const cityName = document.getElementById('location').value;
+        getWeatherData(cityName, apiKey);
+        getForecastData(cityName, apiKey);
+    });
+
+});
+
+async function showCityData(city) {
+    const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`);
+    const data = await response.json();
+
+    console.log(data);
+    
 }
-
-// Fetch weather data for Ahmedabad
-fetchWeatherData(city1, "2");
-
-// Fetch weather data for Bangalore
-fetchWeatherData(city2, "3");
-
-// for about button link
-const aboutButton = document.getElementById("about");
-aboutButton.addEventListener("click", function() {
-  window.location.href = "https://demo-website.jatinsharma73.repl.co/#about-me";
-});
-
-// For Project Button Link
-const projectButton = document.getElementById("projects-link");
-projectButton.addEventListener("click", function() {
-  window.location.href = "https://demo-website.jatinsharma73.repl.co/#projects";
-});
-
-// Add a click event listener to the "Contact" link
-var contactLink = document.getElementById('contacts');
-contactLink.addEventListener('click', function(event) {
-  event.preventDefault(); // Prevent the default behavior of the link
-  var contactSection = document.getElementById('contact');
-  contactSection.scrollIntoView({ behavior: 'smooth' });
-});
+showCityData('delhi')
