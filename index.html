@@ -12,14 +12,14 @@
 </head>
 
 <body class="bg-slate-800 m-0 p-2 font-poppins text-white">
-  <div class="md:flex flex-row md:p-4">
-    <nav class="bg-white/20 backdrop-blur-sm rounded-2xl">
+  <div class="md:flex flex-row w-full md:p-4">
+    <nav class="bg-white/20 backdrop-blur-sm rounded-2xl md:w-[6%]">
       <div class="max-w-7xl mx-auto px-2 md:px-0">
         <div class="flex justify-between h-16">
           <div class="flex-shrink-0 flex items-center">
-            <img src="Sample Pictures/house.svg" class="h-6 w-6 sm:hidden" alt="Logo" />
+            <img src="Sample Pictures/weather.svg" class="h-6 w-6 ml-3 sm:hidden" alt="Logo" />
           </div>
-          <div class="text-center font-bold my-5 ml-[18%] md:hidden">Weather App</div>
+          <div class="text-center font-bold my-5 ml-[16%] md:hidden">Weather App</div>
           <div class="md:realative">
             <div class="hidden md:flex flex-col w-20 bottom-0 justify-center items-center mt-6">
               <img src="Sample Pictures/house.svg" class="h-6 w-6" /><a href="#" class=" p-2">Home</a>
@@ -43,13 +43,13 @@
       <div id="mobile-menu" class="hidden md:hidden">
         <a href="#" class="block text-white hover:bg-gray-200 p-2 rounded">Home</a>
         <a href="./Cities.html" class="block text-white hover:bg-gray-200 p-2 rounded">Cities</a>
-        <a href="#" class="block text-white hover:bg-gray-200 p-2 rounded ">Contact</a>
+        <!-- <a href="#" class="block text-white hover:bg-gray-200 p-2 rounded ">Contact</a> -->
         <a href="#" class="block text-white hover:bg-gray-200 p-2 rounded">Setting</a>
       </div>
     </nav>
 
     <!-- Search bar -->
-    <div class="md:ml-10">
+    <div class="md:ml-10 md:w-[56%]">
       <div class="relative pt-2">
         <input type="text" name="location" id="location" placeholder="Enter City Name"
           class="bg-white/20 backdrop-blur-sm w-full rounded-lg h-10 pl-3 outline-none" />
@@ -166,7 +166,7 @@
       </div>
     </div>
     <!-- Side box for 7-day forecast -->
-    <div class="md:ml-10 md:mt-12">
+    <div class="md:ml-10 md:mt-12 md:w-[36%]">
       <div class="flex flex-col mt-2 bg-white/20 backdrop-blur-sm  rounded-2xl p-4 overflow-auto">
         <div class="ml-4 mt-2 font-semibold text-xl">3-Day Forecast</div>
         <div class="grid grid-cols-1 justify-between mt-2">
